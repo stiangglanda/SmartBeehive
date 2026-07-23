@@ -1,8 +1,19 @@
-# SmartBeehive Monitoring System
+<p align="center">
+  
+</p>
+
+<h1 align="center">SmartBeehive Monitoring System</h1>
 
 This project is an IoT-based beehive monitoring system. An ESP32-S3 collects real-time beehive data (weight, temperature, audio, and images) and sends it over Wi-Fi to a central STM32MP215F-DK Linux server running Docker.
 
 <img width="3886" height="2295" alt="PXL_20260723_111851826" src="https://github.com/user-attachments/assets/53977667-cec1-4db0-828b-55320a0693da" />
+
+
+## Project Structure
+
+This project is divided into two main components:
+* **firmware(this Repo)**: The ESP-IDF C source code for the ESP32-S3 edge node.
+* **[Web Dashboard](https://github.com/stiangglanda/smart-beehive-dashboard)**: The static Next.js frontend application used to visualize the collected hive metrics and media.
 
 ## System Architecture
 

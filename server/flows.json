@@ -1,0 +1,519 @@
+[
+    {
+        "id": "f6f2187d.f17ca8",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "26f8c0ef110edf7a",
+        "type": "mqtt-broker",
+        "name": "default",
+        "broker": "mosquitto",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "57299f233d88ecb5",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": 8086,
+        "protocol": "http",
+        "database": "database",
+        "name": "",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "http://influxdb:8086",
+        "timeout": 10,
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "3cc11d24.ff01a2",
+        "type": "comment",
+        "z": "f6f2187d.f17ca8",
+        "name": "WARNING: please check you have started this container with a volume that is mounted to /data\\n otherwise any flow changes are lost when you redeploy or upgrade the container\\n (e.g. upgrade to a more recent node-red docker image).\\n  If you are using named volumes you can ignore this warning.\\n Double click or see info side panel to learn how to start Node-RED in Docker to save your work",
+        "info": "\nTo start docker with a bind mount volume (-v option), for example:\n\n```\ndocker run -it -p 1880:1880 -v /home/user/node_red_data:/data --name mynodered nodered/node-red\n```\n\nwhere `/home/user/node_red_data` is a directory on your host machine where you want to store your flows.\n\nIf you do not do this then you can experiment and redploy flows, but if you restart or upgrade the container the flows will be disconnected and lost. \n\nThey will still exist in a hidden data volume, which can be recovered using standard docker techniques, but that is much more complex than just starting with a named volume as described above.",
+        "x": 350,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "15dc980af503262c",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "bienen/sensoren",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "26f8c0ef110edf7a",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 360,
+        "y": 360,
+        "wires": [
+            [
+                "51b6e8bb086e6c41"
+            ]
+        ]
+    },
+    {
+        "id": "51b6e8bb086e6c41",
+        "type": "json",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "property": "payload",
+        "action": "",
+        "pretty": false,
+        "x": 530,
+        "y": 360,
+        "wires": [
+            [
+                "f81ed50d4c907ecc",
+                "8d0a126b6331266b",
+                "338fab4625520e05"
+            ]
+        ]
+    },
+    {
+        "id": "f81ed50d4c907ecc",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 680,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "8d0a126b6331266b",
+        "type": "file",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "filename": "/var/www/data.json",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 710,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a5beb51e40c20598",
+        "type": "influxdb out",
+        "z": "f6f2187d.f17ca8",
+        "influxdb": "57299f233d88ecb5",
+        "name": "",
+        "measurement": "sensoren",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "SmartBeehive",
+        "bucket": "beehive_data",
+        "x": 960,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "338fab4625520e05",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "InfluxFormat",
+        "func": "// 1. SICHERHEITS-CHECK: Falls die Daten noch Text (String) sind, parsen wir sie hier manuell!\nif (typeof msg.payload === \"string\") {\n    try {\n        msg.payload = JSON.parse(msg.payload);\n    } catch (e) {\n        // Falls es kein gueltiges JSON ist, abbrechen\n        return null; \n    }\n}\n\n// 2. ECHTE NUMMERN ERZWINGEN (Floats):\n// Wir konvertieren die Werte explizit in Zahlen, damit InfluxDB sie niemals als Text abspeichert.\nmsg.payload = [\n    {\n        temp_stock: parseFloat(msg.payload.temp_stock),\n        temp_brut: parseFloat(msg.payload.temp_brut),\n        humidity: parseFloat(msg.payload.humidity),\n        weight: parseFloat(msg.payload.weight),\n        activity: parseFloat(msg.payload.activity)\n    },\n    {\n        sensor_id: \"beehive_01\"\n    }\n];\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 690,
+        "y": 400,
+        "wires": [
+            [
+                "a5beb51e40c20598"
+            ]
+        ]
+    },
+    {
+        "id": "dc264c26b98789eb",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "300",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 310,
+        "y": 580,
+        "wires": [
+            [
+                "96bf3ce418c8f3aa"
+            ]
+        ]
+    },
+    {
+        "id": "96bf3ce418c8f3aa",
+        "type": "influxdb in",
+        "z": "f6f2187d.f17ca8",
+        "influxdb": "57299f233d88ecb5",
+        "name": "",
+        "query": "from(bucket: \"beehive_data\")\n  |> range(start: -24h)\n  |> filter(fn: (r) => r._measurement == \"sensoren\")\n  |> filter(fn: (r) => r._field == \"weight\" or r._field == \"temp_stock\" or r._field == \"temp_brut\" or r._field == \"humidity\" or r._field == \"activity\")\n  |> aggregateWindow(every: 5m, fn: mean, createEmpty: false)\n  |> pivot(rowKey:[\"_time\"], columnKey: [\"_field\"], valueColumn: \"_value\")\n  |> keep(columns: [\"_time\", \"weight\", \"temp_stock\", \"temp_brut\", \"humidity\", \"activity\"])",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "SmartBeehive",
+        "x": 530,
+        "y": 580,
+        "wires": [
+            [
+                "5bc17256bc77cfaa"
+            ]
+        ]
+    },
+    {
+        "id": "5bc17256bc77cfaa",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "DiagrammFormat",
+        "func": "var data = msg.payload;\nvar formatted = [];\nfor (var i = 0; i < data.length; i++) {\n    var date = new Date(data[i]._time);\n    var timeStr = date.getHours().toString().padStart(2, '0') + \":\" + \n                  date.getMinutes().toString().padStart(2, '0');\n                  \n    formatted.push({\n        time: timeStr,\n        weight: parseFloat(Number(data[i].weight || 0).toFixed(2)),\n        temp: parseFloat(Number(data[i].temp_stock || 0).toFixed(1)),\n        temp_brut: parseFloat(Number(data[i].temp_brut || 0).toFixed(1)),\n        humidity: parseFloat(Number(data[i].humidity || 0).toFixed(1)),\n        activity: parseFloat(Number(data[i].activity || 0).toFixed(0)) // NEU!\n    });\n}\nmsg.payload = formatted;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 770,
+        "y": 580,
+        "wires": [
+            [
+                "5bdc99d326a680bb"
+            ]
+        ]
+    },
+    {
+        "id": "5bdc99d326a680bb",
+        "type": "file",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "filename": "/var/www/history.json",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": false,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 1000,
+        "y": 580,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b1fc6ecc128cf23b",
+        "type": "http in",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "url": "/upload/image",
+        "method": "post",
+        "upload": false,
+        "skipBodyParsing": true,
+        "swaggerDoc": "",
+        "x": 310,
+        "y": 720,
+        "wires": [
+            [
+                "df3cfd62fa4fd1d2"
+            ]
+        ]
+    },
+    {
+        "id": "df3cfd62fa4fd1d2",
+        "type": "file",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "filename": "/var/www/images/latest.jpg",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 580,
+        "y": 720,
+        "wires": [
+            [
+                "0f5d80d0ca29c370"
+            ]
+        ]
+    },
+    {
+        "id": "0f5d80d0ca29c370",
+        "type": "http response",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "statusCode": "200",
+        "headers": {},
+        "x": 860,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "4f5aa39a93ed7da0",
+        "type": "http in",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "url": "/upload/audio",
+        "method": "post",
+        "upload": false,
+        "skipBodyParsing": true,
+        "swaggerDoc": "",
+        "x": 330,
+        "y": 780,
+        "wires": [
+            [
+                "3587cdbd01af52d6"
+            ]
+        ]
+    },
+    {
+        "id": "3587cdbd01af52d6",
+        "type": "file",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "filename": "/var/www/audio/latest.wav",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 590,
+        "y": 780,
+        "wires": [
+            [
+                "4a6ea7a359b6b956"
+            ]
+        ]
+    },
+    {
+        "id": "4a6ea7a359b6b956",
+        "type": "http response",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "statusCode": "200",
+        "headers": {},
+        "x": 840,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "df8f8c1e5c430f71",
+        "type": "http in",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "url": "/api/trigger-photo",
+        "method": "get",
+        "upload": false,
+        "skipBodyParsing": false,
+        "swaggerDoc": "",
+        "x": 340,
+        "y": 840,
+        "wires": [
+            [
+                "5e9674d952d80ca8"
+            ]
+        ]
+    },
+    {
+        "id": "c0b42dcc7f2ea712",
+        "type": "mqtt out",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "bienen/befehl",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "26f8c0ef110edf7a",
+        "x": 760,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "803d5383b89b60b0",
+        "type": "http response",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "statusCode": "200",
+        "headers": {
+            "Access-Control-Allow-Origin": "*"
+        },
+        "x": 740,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "6eef9dc936d15c8f",
+        "type": "http in",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "url": "/api/trigger-audio",
+        "method": "get",
+        "upload": false,
+        "skipBodyParsing": false,
+        "swaggerDoc": "",
+        "x": 360,
+        "y": 960,
+        "wires": [
+            [
+                "0447be336a669d67"
+            ]
+        ]
+    },
+    {
+        "id": "893be3be20a09fcc",
+        "type": "mqtt out",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "bienen/befehl",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "26f8c0ef110edf7a",
+        "x": 780,
+        "y": 960,
+        "wires": []
+    },
+    {
+        "id": "ca862fb9e3a0c58e",
+        "type": "http response",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "statusCode": "200",
+        "headers": {
+            "Access-Control-Allow-Origin": "*"
+        },
+        "x": 760,
+        "y": 1020,
+        "wires": []
+    },
+    {
+        "id": "5e9674d952d80ca8",
+        "type": "change",
+        "z": "f6f2187d.f17ca8",
+        "name": "take_photo",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "take_photo",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 570,
+        "y": 840,
+        "wires": [
+            [
+                "c0b42dcc7f2ea712",
+                "803d5383b89b60b0"
+            ]
+        ]
+    },
+    {
+        "id": "0447be336a669d67",
+        "type": "change",
+        "z": "f6f2187d.f17ca8",
+        "name": "record_audio",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "record_audio",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 590,
+        "y": 960,
+        "wires": [
+            [
+                "893be3be20a09fcc",
+                "ca862fb9e3a0c58e"
+            ]
+        ]
+    },
+    {
+        "id": "8ab1f0dcf65dae22",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-contrib-influxdb": "0.7.0"
+        }
+    }
+]
