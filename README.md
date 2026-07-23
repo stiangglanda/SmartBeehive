@@ -1,5 +1,5 @@
 <p align="center">
-  
+  <img width="310" height="310" alt="favicon" src="https://github.com/user-attachments/assets/71696178-1a64-483d-ad56-798e08e69640" />  
 </p>
 
 <h1 align="center">SmartBeehive Monitoring System</h1>
