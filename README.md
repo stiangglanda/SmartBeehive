@@ -1,53 +1,103 @@
-| Supported Targets | ESP32 | ESP32-C2 | ESP32-C3 | ESP32-C5 | ESP32-C6 | ESP32-C61 | ESP32-H2 | ESP32-H21 | ESP32-H4 | ESP32-P4 | ESP32-S2 | ESP32-S3 | Linux |
-| ----------------- | ----- | -------- | -------- | -------- | -------- | --------- | -------- | --------- | -------- | -------- | -------- | -------- | ----- |
+# SmartBeehive Monitoring System
 
-# Hello World Example
+This project is an IoT-based beehive monitoring system. An ESP32-S3 collects real-time beehive data (weight, temperature, audio, and images) and sends it over Wi-Fi to a central STM32MP215F-DK Linux server running Docker.
 
-Starts a FreeRTOS task to print "Hello World".
+## System Architecture
 
-(See the README.md file in the upper level 'examples' directory for more information about examples.)
+```mermaid
+graph TD
+    subgraph ESP32-S3 [ESP32-S3 Beehive Node]
+        S_Scale[HX711 Load Cell] --> ESP[ESP32-S3]
+        S_Temp[SHT31 Sensor] --> ESP
+        S_Probe[DS18B20 Probe] --> ESP
+        S_Mic[INMP441 Mic] --> ESP
+        S_Cam[OV2640 Cam] --> ESP
+        ESP --> Disp[SSD1306 OLED]
+    end
 
-## How to use example
+    subgraph Server [Any Linux Server - Docker]
+        Broker[Mosquitto MQTT]
+        NodeRED[Node-RED]
+        Influx[InfluxDB v2]
+        Nginx[Nginx Web Server]
+        Storage[(Shared File Storage)]
+    end
 
-Follow detailed instructions provided specifically for this example.
+    ESP -->|1. MQTT Telemetry| Broker
+    Broker -->|2. Forward Data| NodeRED
+    NodeRED -->|3. Write Metrics| Influx
+    
+    ESP -->|4. HTTP POST Images/Audio| NodeRED
+    NodeRED -->|5. Save Files| Storage
+    Nginx -->|6. Serve Files| Storage
+    
+    NodeRED -->|7. MQTT Commands| Broker
+    Broker -->|8. Forward Commands| ESP
 
-Select the instructions depending on Espressif chip installed on your development board:
-
-- [ESP32 Getting Started Guide](https://docs.espressif.com/projects/esp-idf/en/stable/get-started/index.html)
-- [ESP32-S2 Getting Started Guide](https://docs.espressif.com/projects/esp-idf/en/latest/esp32s2/get-started/index.html)
-
-
-## Example folder contents
-
-The project **hello_world** contains one source file in C language [hello_world_main.c](main/hello_world_main.c). The file is located in folder [main](main).
-
-ESP-IDF projects are built using CMake. The project build configuration is contained in `CMakeLists.txt` files that provide set of directives and instructions describing the project's source files and targets (executable, library, or both).
-
-Below is short explanation of remaining files in the project folder.
-
+    subgraph Clients [Dashboard Clients]
+        UI[Web Dashboard] -->|Fetch /data.json & /history.json| Nginx
+        UI -->|Fetch /images & /audio| Nginx
+    end
 ```
-├── CMakeLists.txt
-├── pytest_hello_world.py      Python script used for automated testing
-├── main
-│   ├── CMakeLists.txt
-│   └── hello_world_main.c
-└── README.md                  This is the file you are currently reading
+
+## Hardware Components
+
+### Edge Node
+* ESP32-S3 development board
+* OV2640 Camera
+* INMP441 I2S Microphone
+* HX711 ADC & Load Cell
+* SHT31-D Temp & Humidity Sensor
+* DS18B20 Temp Probe
+* SSD1306 OLED Display
+
+### Server Host
+* **STM32MP215F-DK** (or any device running Linux like Raspberry Pi, PC, or VPS)
+
+## Pinout Mapping (ESP32-S3)
+
+| Component / Signal | ESP32-S3 Pin |
+| :--- | :--- |
+| **HX711 DOUT** | GPIO 1 |
+| **HX711 SCK** | GPIO 2 |
+| **I2C SDA** (SHT31 & OLED) | GPIO 21 |
+| **I2C SCL** (SHT31 & OLED) | GPIO 38 |
+| **DS18B20 Data** | GPIO 14 |
+| **INMP441 I2S WS** | GPIO 39 |
+| **INMP441 I2S SCK** | GPIO 40 |
+| **INMP441 I2S SD** | GPIO 41 |
+| **OV2640 Camera** | Standard DVP pinout |
+
+## Server Deployment
+
+To deploy the entire server stack (Mosquitto, Node-RED, InfluxDB, Nginx) on your Linux host using the provided `server/docker-compose.yml`:
+
+```bash
+# Start the stack in background (detached mode)
+docker-compose up -d
+
+# Verify that all 4 containers are successfully running
+docker ps
 ```
 
-For more information on structure and contents of ESP-IDF projects, please refer to Section [Build System](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/build-system.html) of the ESP-IDF Programming Guide.
+## Edge Node Build Guide
 
-## Troubleshooting
+### Configure Credentials
+Update the configuration section at the top of the main source file:
 
-* Program upload failure
+```c
+#define WIFI_SSID           "Your_SSID"
+#define WIFI_PASS           "Your_Password"
+#define SERVER_IP           "Your_Server_IP"
+```
 
-    * Hardware connection is not correct: run `idf.py -p PORT monitor`, and reboot your board to see if there are any output logs.
-    * The baud rate for downloading is too high: lower your baud rate in the `menuconfig` menu, and try again.
+### Compile and Flash
+Execute the following commands in your ESP-IDF terminal environment:
 
-## Technical support and feedback
+```bash
+idf.py set-target esp32s3
 
-Please use the following feedback channels:
+idf.py build
 
-* For technical queries, go to the [esp32.com](https://esp32.com/) forum
-* For a feature request or bug report, create a [GitHub issue](https://github.com/espressif/esp-idf/issues)
-
-We will get back to you as soon as possible.
+idf.py flash
+```

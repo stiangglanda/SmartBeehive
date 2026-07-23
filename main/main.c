@@ -17,9 +17,9 @@
 #include "esp_http_client.h"
 #include "mqtt_client.h"
 
-#define WIFI_SSID           "ssid"
-#define WIFI_PASS           "psw"
-#define SERVER_IP           "192.168.1.203"
+#define WIFI_SSID      "Your_SSID"
+#define WIFI_PASS      "Your_Password"
+#define SERVER_IP      "Your_Server_IP"
 
 #define HX711_DOUT_PIN      GPIO_NUM_1
 #define HX711_SCK_PIN       GPIO_NUM_2

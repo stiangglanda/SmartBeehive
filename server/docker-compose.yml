@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: mosquitto
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+    volumes:
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_log:/mosquitto/log
+
+  influxdb:
+    image: influxdb:2.7-alpine
+    container_name: influxdb
+    restart: unless-stopped
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb_data:/var/lib/influxdb2
+
+  nodered:
+    image: nodered/node-red:latest
+    container_name: nodered
+    restart: unless-stopped
+    user: "0:0"
+    ports:
+      - "1880:1880"
+    volumes:
+      - nodered_data:/data
+      - ./www:/var/www
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./www:/usr/share/nginx/html
+
+volumes:
+  mosquitto_data:
+  mosquitto_log:
+  influxdb_data:
+  nodered_data:
