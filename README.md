@@ -6,6 +6,14 @@
 
 This project is an IoT-based beehive monitoring system. An ESP32-S3 collects real-time beehive data (weight, temperature, audio, and images) and sends it over Wi-Fi to a central STM32MP215F-DK Linux server running Docker.
 
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=g_EhRMFEKto">
+    <img src="https://img.youtube.com/vi/g_EhRMFEKto/maxresdefault.jpg" width="600">
+    <br>
+    ▶ Watch Video
+  </a>
+</p>
+
 <img width="3886" height="2295" alt="PXL_20260723_111851826" src="https://github.com/user-attachments/assets/53977667-cec1-4db0-828b-55320a0693da" />
 
 
