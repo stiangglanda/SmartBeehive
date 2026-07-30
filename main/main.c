@@ -31,7 +31,7 @@
 #define DS18B20_PIN         GPIO_NUM_14
 
 #define I2C_MASTER_NUM      I2C_NUM_0
-#define I2C_MASTER_FREQ_HZ  400000
+#define I2C_MASTER_FREQ_HZ  100000
 #define SHT31_ADDR          0x44
 #define OLED_ADDR           0x3C
 
@@ -611,34 +611,49 @@ void scale_task(void *pvParameters) {
 }
 
 void sht31_task(void *pvParameters) {
-    uint8_t cmd[2] = {0x24, 0x00}; 
-    uint8_t data[6] = {0};
+    uint8_t reset_cmd[2]   = {0x30, 0xA2};
+    uint8_t heater_on[2]   = {0x30, 0x6D};
+    uint8_t heater_off[2]  = {0x30, 0x66};
+    uint8_t measure_cmd[2] = {0x24, 0x00};
     
+    uint8_t data[6]; 
+    int wet_counter = 0;
+
+    if (i2c_mutex != NULL) {
+        xSemaphoreTake(i2c_mutex, portMAX_DELAY);
+        i2c_master_transmit(sht31_dev_handle, reset_cmd, 2, 1000);
+        xSemaphoreGive(i2c_mutex);
+        vTaskDelay(pdMS_TO_TICKS(50)); 
+    }
+
     while (1) {
         if (i2c_mutex != NULL) {
             xSemaphoreTake(i2c_mutex, portMAX_DELAY);
-            esp_err_t err_tx = i2c_master_transmit(sht31_dev_handle, cmd, 2, 1000);
-            xSemaphoreGive(i2c_mutex);
-
-            if (err_tx == ESP_OK) {
-                vTaskDelay(pdMS_TO_TICKS(50));
-
-                xSemaphoreTake(i2c_mutex, portMAX_DELAY);
-                esp_err_t err_rx = i2c_master_receive(sht31_dev_handle, data, 6, 1000);
-                xSemaphoreGive(i2c_mutex);
-
-                if (err_rx == ESP_OK) {
-                    if (!(data[0] == 0x00 && data[1] == 0x00) && !(data[0] == 0xFF && data[1] == 0xFF)) {
+            memset(data, 0, sizeof(data));
+            
+            if (i2c_master_transmit(sht31_dev_handle, measure_cmd, 2, 1000) == ESP_OK) {
+                vTaskDelay(pdMS_TO_TICKS(20));
+                
+                if (i2c_master_receive(sht31_dev_handle, data, 6, 1000) == ESP_OK) {
+                    if (data[0] == 0x00 && data[1] == 0x00) {
+                        wet_counter++;
+                        i2c_master_transmit(sht31_dev_handle, heater_on, 2, 1000);
+                    } else {
+                        if (wet_counter > 0) {
+                            i2c_master_transmit(sht31_dev_handle, heater_off, 2, 1000);
+                            wet_counter = 0;
+                        }
+                        
                         uint16_t t_raw = (data[0] << 8) | data[1]; 
                         uint16_t h_raw = (data[3] << 8) | data[4];
                         current_temp = -45.0f + 175.0f * ((float)t_raw / 65535.0f);
                         current_hum = 100.0f * ((float)h_raw / 65535.0f);
-                    } else {
-                        printf("SHT31: Ungültige Daten gelesen, überspringe diesen Wert.\n");
                     }
                 }
             }
+            xSemaphoreGive(i2c_mutex); 
         }
+        
         vTaskDelay(pdMS_TO_TICKS(2000));
     }
 }
