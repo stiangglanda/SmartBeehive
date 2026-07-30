@@ -78,8 +78,8 @@ static camera_config_t camera_config = {
     .fb_location = CAMERA_FB_IN_DRAM
 };
 
-float scale_factor = 427.5f; 
-int32_t offset = 0;
+float scale_factor = 27000.0f;
+int32_t offset = 524532;
 i2s_chan_handle_t rx_chan;
 esp_mqtt_client_handle_t mqtt_client = NULL;
 
@@ -370,7 +370,7 @@ int32_t hx711_read_average(int times) {
 
 void hx711_tare(void) {
     printf("Scale: Taring...\n");
-    offset = hx711_read_average(10);
+    offset = hx711_read_average(50);
     printf("Scale: Done.\n");
 }
 
@@ -585,7 +585,7 @@ void upload_audio(void) {
 
 void scale_task(void *pvParameters) {
     while (1) {
-        int32_t current_raw = hx711_read_average(3);
+        int32_t current_raw = hx711_read_average(50);
         int32_t raw_without_offset = current_raw - offset;
         current_weight = (float)raw_without_offset / scale_factor;
         vTaskDelay(pdMS_TO_TICKS(1000));
@@ -723,8 +723,6 @@ void app_main(void) {
     hx711_init();
     i2c_init(); 
     vTaskDelay(pdMS_TO_TICKS(500));
-
-    hx711_tare(); 
 
     // Note: Initialize the camera first before starting I2S microphone tasks 
     // to avoid bus conflicts on power-on reset.
