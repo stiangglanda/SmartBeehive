@@ -96,6 +96,9 @@ i2c_master_bus_handle_t i2c_bus_handle;
 i2c_master_dev_handle_t oled_dev_handle;
 i2c_master_dev_handle_t sht31_dev_handle;
 
+// I2C Bus Mutex
+SemaphoreHandle_t i2c_mutex = NULL;
+
 int32_t hx711_read_average(int times);
 int32_t hx711_read_raw(void);
 void upload_photo(void);
@@ -241,14 +244,29 @@ void oled_print(uint8_t page, uint8_t col, const char* str) {
     oled_cmd(0x00 + (col & 0x0F));
     oled_cmd(0x10 + ((col >> 4) & 0x0F));
     
+    int current_col = col;
+    
     while (*str) {
+        if (current_col >= 128 - 6) { 
+            break; 
+        }
+        
         int idx = get_font_idx(*str++);
+        
         for (int i = 0; i < 5; i++) {
             uint8_t d[2] = {0x40, min_font[idx][i]};
             i2c_master_transmit(oled_dev_handle, d, 2, 100);
         }
         uint8_t space[2] = {0x40, 0x00};
         i2c_master_transmit(oled_dev_handle, space, 2, 100);
+        
+        current_col += 6;
+    }
+    
+    while (current_col < 128) {
+        uint8_t blank[2] = {0x40, 0x00};
+        i2c_master_transmit(oled_dev_handle, blank, 2, 100);
+        current_col++;
     }
 }
 
@@ -594,15 +612,31 @@ void scale_task(void *pvParameters) {
 
 void sht31_task(void *pvParameters) {
     uint8_t cmd[2] = {0x24, 0x00}; 
-    uint8_t data[6];
+    uint8_t data[6] = {0};
+    
     while (1) {
-        if (i2c_master_transmit(sht31_dev_handle, cmd, 2, 1000) == ESP_OK) {
-            vTaskDelay(pdMS_TO_TICKS(20));
-            if (i2c_master_receive(sht31_dev_handle, data, 6, 1000) == ESP_OK) {
-                uint16_t t_raw = (data[0] << 8) | data[1]; 
-                uint16_t h_raw = (data[3] << 8) | data[4];
-                current_temp = -45.0f + 175.0f * ((float)t_raw / 65535.0f);
-                current_hum = 100.0f * ((float)h_raw / 65535.0f);
+        if (i2c_mutex != NULL) {
+            xSemaphoreTake(i2c_mutex, portMAX_DELAY);
+            esp_err_t err_tx = i2c_master_transmit(sht31_dev_handle, cmd, 2, 1000);
+            xSemaphoreGive(i2c_mutex);
+
+            if (err_tx == ESP_OK) {
+                vTaskDelay(pdMS_TO_TICKS(50));
+
+                xSemaphoreTake(i2c_mutex, portMAX_DELAY);
+                esp_err_t err_rx = i2c_master_receive(sht31_dev_handle, data, 6, 1000);
+                xSemaphoreGive(i2c_mutex);
+
+                if (err_rx == ESP_OK) {
+                    if (!(data[0] == 0x00 && data[1] == 0x00) && !(data[0] == 0xFF && data[1] == 0xFF)) {
+                        uint16_t t_raw = (data[0] << 8) | data[1]; 
+                        uint16_t h_raw = (data[3] << 8) | data[4];
+                        current_temp = -45.0f + 175.0f * ((float)t_raw / 65535.0f);
+                        current_hum = 100.0f * ((float)h_raw / 65535.0f);
+                    } else {
+                        printf("SHT31: Ungültige Daten gelesen, überspringe diesen Wert.\n");
+                    }
+                }
             }
         }
         vTaskDelay(pdMS_TO_TICKS(2000));
@@ -631,33 +665,44 @@ void ds18b20_task(void *pvParameters) {
 }
 
 void display_task(void *pvParameters) {
-    oled_init(); 
-    oled_clear();
+    if (i2c_mutex != NULL) {
+        xSemaphoreTake(i2c_mutex, portMAX_DELAY);
+        oled_init(); 
+        oled_clear();
+        xSemaphoreGive(i2c_mutex);
+    }
+    
     char buf[32];
     
     while (1) {
-        snprintf(buf, sizeof(buf), "W   %.2f kg", current_weight); 
-        oled_print(0, 0, buf); 
-        
-        snprintf(buf, sizeof(buf), "T1  %.1f oC", current_temp); 
-        oled_print(1, 0, buf); 
-        
-        snprintf(buf, sizeof(buf), "T2  %.1f oC", current_probe_temp); 
-        oled_print(2, 0, buf); 
-        
-        snprintf(buf, sizeof(buf), "H   %.1f %%", current_hum); 
-        oled_print(3, 0, buf);
+        if (i2c_mutex != NULL) {
+            xSemaphoreTake(i2c_mutex, portMAX_DELAY);
+            
+            snprintf(buf, sizeof(buf), "W   %.2f kg", current_weight); 
+            oled_print(0, 0, buf); 
+            
+            snprintf(buf, sizeof(buf), "T1  %.1f oC", current_temp); 
+            oled_print(1, 0, buf); 
+            
+            snprintf(buf, sizeof(buf), "T2  %.1f oC", current_probe_temp); 
+            oled_print(2, 0, buf); 
+            
+            snprintf(buf, sizeof(buf), "H   %.1f %%", current_hum); 
+            oled_print(3, 0, buf);
 
-        snprintf(buf, sizeof(buf), "A   %lu %%", current_activity); 
-        oled_print(4, 0, buf);
+            snprintf(buf, sizeof(buf), "A   %lu %%", current_activity); 
+            oled_print(4, 0, buf);
 
-        oled_print(5, 0, "--------------");
+            oled_print(5, 0, "--------------");
 
-        snprintf(buf, sizeof(buf), "WiFi %s", wifi_connected ? "OK" : "--"); 
-        oled_print(6, 0, buf);
+            snprintf(buf, sizeof(buf), "WiFi %s", wifi_connected ? "OK" : "--"); 
+            oled_print(6, 0, buf);
 
-        snprintf(buf, sizeof(buf), "MQTT %s", mqtt_connected ? "OK" : "--"); 
-        oled_print(7, 0, buf);
+            snprintf(buf, sizeof(buf), "MQTT %s", mqtt_connected ? "OK" : "--"); 
+            oled_print(7, 0, buf);
+            
+            xSemaphoreGive(i2c_mutex);
+        }
 
         vTaskDelay(pdMS_TO_TICKS(1000));
     }
@@ -721,7 +766,8 @@ void app_main(void) {
     ESP_ERROR_CHECK(ret);
 
     hx711_init();
-    i2c_init(); 
+    i2c_init();
+    i2c_mutex = xSemaphoreCreateMutex();
     vTaskDelay(pdMS_TO_TICKS(500));
 
     // Note: Initialize the camera first before starting I2S microphone tasks 
