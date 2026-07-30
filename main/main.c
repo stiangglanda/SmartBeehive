@@ -78,7 +78,7 @@ static camera_config_t camera_config = {
     .fb_location = CAMERA_FB_IN_DRAM
 };
 
-float scale_factor = 27000.0f;
+float scale_factor = 27102.500f;
 int32_t offset = 524532;
 i2s_chan_handle_t rx_chan;
 esp_mqtt_client_handle_t mqtt_client = NULL;
