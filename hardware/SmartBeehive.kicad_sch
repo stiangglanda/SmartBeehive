@@ -3556,7 +3556,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "SmartBeehiveLib:INMP441"
 			(at 66.04 63.5 0)
 			(hide yes)
 			(show_name no)
@@ -3806,7 +3806,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "SmartBeehiveLib:DS18B20"
 			(at 231.14 100.33 0)
 			(hide yes)
 			(show_name no)
