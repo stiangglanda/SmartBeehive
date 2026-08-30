@@ -646,9 +646,9 @@
 		)
 		(symbol "SHT31_1_1"
 			(pin passive line
-				(at 0 8.89 270)
+				(at -7.62 -1.27 0)
 				(length 2.54)
-				(name "VIN"
+				(name "SDA"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -656,24 +656,6 @@
 					)
 				)
 				(number "1"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin passive line
-				(at 0 -8.89 90)
-				(length 2.54)
-				(name "GND"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "2"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -691,6 +673,24 @@
 						)
 					)
 				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 0 -8.89 90)
+				(length 2.54)
+				(name "GND"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
 				(number "3"
 					(effects
 						(font
@@ -700,9 +700,9 @@
 				)
 			)
 			(pin passive line
-				(at -7.62 -1.27 0)
+				(at 0 8.89 270)
 				(length 2.54)
-				(name "SDA"
+				(name "VIN"
 					(effects
 						(font
 							(size 1.27 1.27)
