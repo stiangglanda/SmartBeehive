@@ -484,7 +484,9 @@
     }
   },
   "libraries": {
-    "pinned_footprint_libs": [],
+    "pinned_footprint_libs": [
+      "SmartBeehiveLib"
+    ],
     "pinned_symbol_libs": [
       "HX711_BreakOut"
     ]
