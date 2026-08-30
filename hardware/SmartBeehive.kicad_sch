@@ -292,7 +292,7 @@
 				)
 			)
 			(property "Value" "HX711_Module"
-				(at 13.462 0 0)
+				(at 22.606 0 0)
 				(show_name no)
 				(do_not_autoplace no)
 				(effects
@@ -413,6 +413,114 @@
 						)
 					)
 					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 8.89 6.35 180)
+					(length 2.54)
+					(name "E+"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 8.89 3.81 180)
+					(length 2.54)
+					(name "E-"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "6"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 8.89 1.27 180)
+					(length 2.54)
+					(name "A-"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "7"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 8.89 -1.27 180)
+					(length 2.54)
+					(name "A+"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "8"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 8.89 -3.81 180)
+					(length 2.54)
+					(name "B-"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "9"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 8.89 -6.35 180)
+					(length 2.54)
+					(name "B+"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "10"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -2074,6 +2182,10 @@
 		(uuid "05dc22d1-7024-4675-8cd9-6dbc94b14226")
 	)
 	(no_connect
+		(at 210.82 72.39)
+		(uuid "0c025640-de39-413b-956b-fedcc144dfea")
+	)
+	(no_connect
 		(at 161.29 49.53)
 		(uuid "125fd3b0-30d8-4231-898b-4bae61bc6c6f")
 	)
@@ -2088,6 +2200,10 @@
 	(no_connect
 		(at 161.29 123.19)
 		(uuid "36aee8f5-d1f6-4a7d-b643-36b73eb2cab6")
+	)
+	(no_connect
+		(at 210.82 74.93)
+		(uuid "440aaa72-4f59-4705-b920-ebddb68455a0")
 	)
 	(no_connect
 		(at 161.29 72.39)
@@ -2122,6 +2238,10 @@
 		(uuid "6137f54c-5b2f-4886-b37b-543e727371c1")
 	)
 	(no_connect
+		(at 210.82 69.85)
+		(uuid "670f1e79-00ac-45cc-b432-630d04189c00")
+	)
+	(no_connect
 		(at 161.29 82.55)
 		(uuid "6bbd17bc-d337-4e00-80c8-d3ed187a57aa")
 	)
@@ -2132,6 +2252,10 @@
 	(no_connect
 		(at 110.49 46.99)
 		(uuid "90e9e400-bf5f-44c1-bb14-8d8a95f987a5")
+	)
+	(no_connect
+		(at 210.82 64.77)
+		(uuid "9494cb23-a35c-444d-ab9d-c487caec8865")
 	)
 	(no_connect
 		(at 161.29 110.49)
@@ -2148,6 +2272,10 @@
 	(no_connect
 		(at 161.29 57.15)
 		(uuid "a9b6c9b4-8334-43ef-b92f-2ce72187c1c1")
+	)
+	(no_connect
+		(at 210.82 67.31)
+		(uuid "b165c00f-6c95-4a4a-bebc-3b1512c11742")
 	)
 	(no_connect
 		(at 161.29 95.25)
@@ -2176,6 +2304,10 @@
 	(no_connect
 		(at 161.29 46.99)
 		(uuid "d8ff446a-be98-44bc-8f98-41d9154397bd")
+	)
+	(no_connect
+		(at 210.82 62.23)
+		(uuid "da8924f1-a1d5-4f41-9a27-be709ab70de3")
 	)
 	(no_connect
 		(at 161.29 74.93)
@@ -3312,94 +3444,6 @@
 		)
 	)
 	(symbol
-		(lib_id "HX711_BreakOut:HX711_BreakOut_1")
-		(at 201.93 68.58 0)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "835cd0c1-7192-4114-9a96-bf648ecfe4c4")
-		(property "Reference" "U2"
-			(at 209.55 67.3099 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "HX711_Module"
-			(at 209.55 69.8499 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "SmartBeehiveLib:HX711"
-			(at 201.93 68.58 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 201.93 68.58 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" ""
-			(at 201.93 68.58 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "3"
-			(uuid "cf940108-f63a-49c6-a664-bfef6ccec4e1")
-		)
-		(pin "2"
-			(uuid "365921b8-37d1-42aa-baf8-c82d6a157832")
-		)
-		(pin "1"
-			(uuid "7e6676d1-b24f-4a90-bacb-92fbdc73d33e")
-		)
-		(pin "4"
-			(uuid "4f3e4e93-9481-4391-a8b0-35194c351936")
-		)
-		(instances
-			(project "SmartBeehive"
-				(path "/d27290ed-e962-41b2-a92d-f7a6144dd72d"
-					(reference "U2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
 		(at 135.89 135.89 0)
 		(unit 1)
@@ -4042,6 +4086,112 @@
 			(project "SmartBeehive"
 				(path "/d27290ed-e962-41b2-a92d-f7a6144dd72d"
 					(reference "#PWR04")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "HX711_BreakOut:HX711_BreakOut_1")
+		(at 201.93 68.58 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d8a10c7f-a0f2-4bd1-bef7-791ff6d6ad28")
+		(property "Reference" "U2"
+			(at 204.0733 55.88 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "HX711_Module"
+			(at 204.0733 58.42 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "SmartBeehiveLib:HX711_V2"
+			(at 201.93 68.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 201.93 68.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 201.93 68.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "7"
+			(uuid "85594ecd-8114-44de-89f6-a1f81f308de0")
+		)
+		(pin "2"
+			(uuid "21fbb89c-c7a4-4e5b-bda6-83d343e659fd")
+		)
+		(pin "5"
+			(uuid "3e355a94-8ae4-448d-aec0-063a30476493")
+		)
+		(pin "6"
+			(uuid "f6fbaf40-a51e-475a-a7f6-eee28ed695f3")
+		)
+		(pin "1"
+			(uuid "01ffeb76-699e-4532-a87f-6918266834ef")
+		)
+		(pin "4"
+			(uuid "c93def85-ee70-4ee4-a950-6b44e57ceb8b")
+		)
+		(pin "3"
+			(uuid "7900e822-5855-4c0b-ae5f-121f56fc6d7c")
+		)
+		(pin "8"
+			(uuid "3ae85186-ec6a-4553-ae3a-f64288bd0d1f")
+		)
+		(pin "9"
+			(uuid "0ceed98d-18dc-458c-82b1-f60f7a2c3cad")
+		)
+		(pin "10"
+			(uuid "4b87c51f-f438-4f81-b18d-aa3711928ba3")
+		)
+		(instances
+			(project "SmartBeehive"
+				(path "/d27290ed-e962-41b2-a92d-f7a6144dd72d"
+					(reference "U2")
 					(unit 1)
 				)
 			)

@@ -7,7 +7,7 @@
 		(at 11.43 15.24 0)
 		(unlocked yes)
 		(layer "F.SilkS")
-		(uuid "987937ff-0b18-4fb5-b50d-00a12cfbb64a")
+		(uuid "c3c0cf6d-250e-47bf-b113-999498ad5d06")
 		(effects
 			(font
 				(size 1 1)
@@ -19,7 +19,7 @@
 		(at 0 1 0)
 		(unlocked yes)
 		(layer "F.Fab")
-		(uuid "3460ce2a-a327-4b0b-997d-877921e439c0")
+		(uuid "5fc38c9d-6e1b-4feb-9e0f-48f1faa28c09")
 		(effects
 			(font
 				(size 1 1)
@@ -32,7 +32,7 @@
 		(unlocked yes)
 		(layer "F.Fab")
 		(hide yes)
-		(uuid "7fd70ab8-164d-4635-a7da-1e91768c5b9a")
+		(uuid "413c94d5-9e9b-4e6f-a3bf-9b7ea5aaef93")
 		(effects
 			(font
 				(size 1 1)
@@ -45,7 +45,7 @@
 		(unlocked yes)
 		(layer "F.Fab")
 		(hide yes)
-		(uuid "7a204c66-9cf4-4d5c-a643-93c7702fd26c")
+		(uuid "95590e70-a518-4fc2-b754-aeb4071b5505")
 		(effects
 			(font
 				(size 1 1)
@@ -63,7 +63,7 @@
 			(type default)
 		)
 		(layer "F.SilkS")
-		(uuid "b0b2ca0f-d80e-415f-9680-4879acf59603")
+		(uuid "eec512fb-f1d2-4dc5-a7cc-323b3bdc0912")
 	)
 	(fp_line
 		(start -14 14)
@@ -73,7 +73,7 @@
 			(type default)
 		)
 		(layer "F.SilkS")
-		(uuid "1a5dad80-c93d-4c04-a53b-cd92d9eeba7c")
+		(uuid "7ceeb047-87df-4b33-a331-cb968d454277")
 	)
 	(fp_line
 		(start 14 -14)
@@ -83,7 +83,7 @@
 			(type default)
 		)
 		(layer "F.SilkS")
-		(uuid "0e56cd95-7c97-42dc-bdba-f2f8691bb0ff")
+		(uuid "a5bb4901-63cc-4d1a-abd2-01a816364771")
 	)
 	(fp_line
 		(start 14 14)
@@ -93,13 +93,13 @@
 			(type default)
 		)
 		(layer "F.SilkS")
-		(uuid "6709cfc6-e015-459f-80b4-4ba96e82fc29")
+		(uuid "aed52053-470f-41f9-a799-c3ffa4b40b05")
 	)
 	(fp_text user "GND"
-		(at -3.2 -8.6 90)
+		(at -3.39 -8.6 90)
 		(unlocked yes)
 		(layer "F.SilkS")
-		(uuid "782e15a0-6394-4830-8545-426a0c2a729c")
+		(uuid "6fa1394c-d83e-4fb3-9df6-832bc3fe2d5d")
 		(effects
 			(font
 				(size 0.7 0.7)
@@ -109,10 +109,10 @@
 		)
 	)
 	(fp_text user "VCC"
-		(at -0.6 -8.6 90)
+		(at -0.79 -8.6 90)
 		(unlocked yes)
 		(layer "F.SilkS")
-		(uuid "f5161c8a-e51e-4f7f-9a3e-129815df77fb")
+		(uuid "3ba5ca4f-23ec-4244-b5fb-c31c5b5c10c1")
 		(effects
 			(font
 				(size 0.7 0.7)
@@ -122,10 +122,10 @@
 		)
 	)
 	(fp_text user "SCL"
-		(at 1.9 -8.7 90)
+		(at 1.71 -8.7 90)
 		(unlocked yes)
 		(layer "F.SilkS")
-		(uuid "fbc3cdf4-617e-40ab-88c0-e407f0a9378f")
+		(uuid "9913404a-be70-4979-a299-30213191a304")
 		(effects
 			(font
 				(size 0.7 0.7)
@@ -135,10 +135,10 @@
 		)
 	)
 	(fp_text user "SDA"
-		(at 4.4 -8.7 90)
+		(at 4.21 -8.7 90)
 		(unlocked yes)
 		(layer "F.SilkS")
-		(uuid "a09b3689-1c5d-405b-8775-46b4097f08b9")
+		(uuid "128a798a-21bf-49f8-b8e6-936822499f24")
 		(effects
 			(font
 				(size 0.7 0.7)
@@ -151,7 +151,7 @@
 		(at 0 2.5 0)
 		(unlocked yes)
 		(layer "F.Fab")
-		(uuid "2dd9772e-137b-482c-b6ef-106e1ef17e70")
+		(uuid "0d8cb4b0-ec3c-4aba-a023-845263d9f557")
 		(effects
 			(font
 				(size 1 1)
@@ -160,40 +160,40 @@
 		)
 	)
 	(pad "1" thru_hole rect
-		(at -3.62 -11.43)
+		(at -3.81 -11.43)
 		(size 1.27 1.27)
 		(drill 0.8)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
-		(uuid "348e1884-3f15-42aa-8885-3d7a6a6c6217")
+		(uuid "2990f80b-5f45-41b5-b4a0-a80150b3f8dc")
 	)
 	(pad "2" thru_hole circle
-		(at -1.08 -11.43)
+		(at -1.27 -11.43)
 		(size 1.27 1.27)
 		(drill 0.8)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
-		(uuid "7f089666-5bae-4dda-b694-50e0c5e96cbe")
+		(uuid "f9098d96-e8a6-4fbb-b617-8535d2902715")
 	)
 	(pad "3" thru_hole circle
-		(at 1.46 -11.43)
+		(at 1.27 -11.43)
 		(size 1.27 1.27)
 		(drill 0.8)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
-		(uuid "5f8718d4-afd7-4c8d-bb55-dd6dec677c75")
+		(uuid "0f80fb26-4064-48b2-baf5-6c3f4dfcd673")
 	)
 	(pad "4" thru_hole circle
-		(at 4 -11.43)
+		(at 3.81 -11.43)
 		(size 1.27 1.27)
 		(drill 0.8)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
-		(uuid "a386da4f-4b0b-40f3-90e8-27639220f398")
+		(uuid "52b2a061-b502-454e-9fa9-28f983c1c9ca")
 	)
 	(zone
 		(layer "F.SilkS")
-		(uuid "944409a8-a0a4-47c6-b455-7bf37f2fcb35")
+		(uuid "0eeb7b1d-f10b-4aa0-bce6-b10d26a54d26")
 		(hatch edge 0.5)
 		(connect_pads
 			(clearance 0)
