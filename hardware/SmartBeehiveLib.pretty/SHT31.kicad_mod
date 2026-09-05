@@ -7,7 +7,7 @@
 		(at 3.2 7.4 0)
 		(unlocked yes)
 		(layer "F.SilkS")
-		(uuid "ee0ad7d8-d8fa-463a-921d-f4ba07de5e83")
+		(uuid "888904f3-a994-4189-be5b-ddef4f7de685")
 		(effects
 			(font
 				(size 1 1)
@@ -19,7 +19,7 @@
 		(at 0 1 0)
 		(unlocked yes)
 		(layer "F.Fab")
-		(uuid "666267f4-d568-4ea1-bc63-643bc0872c99")
+		(uuid "e424adb4-7275-48e8-b4f1-5098eca7e12c")
 		(effects
 			(font
 				(size 1 1)
@@ -32,7 +32,7 @@
 		(unlocked yes)
 		(layer "F.Fab")
 		(hide yes)
-		(uuid "6eac6a82-66ea-4599-8363-15fd8655ab5a")
+		(uuid "9789dff7-6980-4138-a689-4c81141a2784")
 		(effects
 			(font
 				(size 1 1)
@@ -45,7 +45,7 @@
 		(unlocked yes)
 		(layer "F.Fab")
 		(hide yes)
-		(uuid "4d49f2d7-e649-4b2c-97e9-413afaa02308")
+		(uuid "16ed1ef8-4833-4603-b0e0-705c909f547b")
 		(effects
 			(font
 				(size 1 1)
@@ -63,7 +63,7 @@
 			(type default)
 		)
 		(layer "F.SilkS")
-		(uuid "60738a65-27e7-4b67-adff-97073b7790d1")
+		(uuid "a43713d5-cd5e-4c71-8ea0-f0fd505925a9")
 	)
 	(fp_line
 		(start -5.2 6.3)
@@ -73,7 +73,7 @@
 			(type default)
 		)
 		(layer "F.SilkS")
-		(uuid "1c09dca0-14a3-404d-8fba-03456f67ec9b")
+		(uuid "90f57b08-1b5b-4de9-855d-b84537349a10")
 	)
 	(fp_line
 		(start 5.2 -6.3)
@@ -83,7 +83,7 @@
 			(type default)
 		)
 		(layer "F.SilkS")
-		(uuid "923c6d73-d6a3-4b71-a712-4605ccc92d71")
+		(uuid "542dabec-0e1e-473f-b5cb-cc90851fb665")
 	)
 	(fp_line
 		(start 5.2 6.3)
@@ -93,42 +93,42 @@
 			(type default)
 		)
 		(layer "F.SilkS")
-		(uuid "83e679d9-b448-404f-8fbb-07aedd7a3080")
+		(uuid "c4bda9f6-4a0c-4c37-b9eb-fa24b389eed0")
 	)
 	(fp_text user "SDA"
-		(at -3.175 -1.905 90)
+		(at -3.175 -1.27 90)
 		(unlocked yes)
 		(layer "F.SilkS")
-		(uuid "19ea5e43-1f9b-4700-9af3-fb71ccb379f6")
+		(uuid "cf45420e-0e22-4e2d-99f1-3756b91e7c92")
 		(effects
 			(font
-				(size 0.7 0.7)
+				(size 1 1)
 				(thickness 0.1)
 			)
 			(justify left bottom)
 		)
 	)
 	(fp_text user "SCL"
-		(at -0.635 -1.905 90)
+		(at -0.635 -1.27 90)
 		(unlocked yes)
 		(layer "F.SilkS")
-		(uuid "7c86a112-de6b-4254-8c51-780719f66b28")
+		(uuid "a723ac56-6df1-4cdb-ac25-b944cdd6db6e")
 		(effects
 			(font
-				(size 0.7 0.7)
+				(size 1 1)
 				(thickness 0.1)
 			)
 			(justify left bottom)
 		)
 	)
 	(fp_text user "GND"
-		(at 1.905 -1.905 90)
+		(at 1.905 -1.27 90)
 		(unlocked yes)
 		(layer "F.SilkS")
-		(uuid "b4260c57-33bb-4dbb-8673-955992672897")
+		(uuid "3087161e-8586-408a-9e1f-0722c06edd05")
 		(effects
 			(font
-				(size 0.7 0.7)
+				(size 1 1)
 				(thickness 0.1)
 			)
 			(justify left bottom)
@@ -138,10 +138,10 @@
 		(at 4.445 -1.905 90)
 		(unlocked yes)
 		(layer "F.SilkS")
-		(uuid "120419fb-4d5a-4ebd-a6b3-95798fa1a273")
+		(uuid "b865973d-b806-481e-9f78-f5743ef64923")
 		(effects
 			(font
-				(size 0.7 0.7)
+				(size 1 1)
 				(thickness 0.1)
 			)
 			(justify left bottom)
@@ -151,7 +151,7 @@
 		(at 0 2.5 0)
 		(unlocked yes)
 		(layer "F.Fab")
-		(uuid "17d3190b-2313-4581-ad53-4bf3c083761a")
+		(uuid "97de1ccb-1eb0-4c3f-9d9c-472bd66fa37d")
 		(effects
 			(font
 				(size 1 1)
@@ -165,7 +165,7 @@
 		(drill 0.8)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
-		(uuid "e4f4fb03-22bb-447a-b537-4c22c6185de0")
+		(uuid "dea1a4db-9d9a-43b3-9abf-fcf5fbf720d0")
 	)
 	(pad "2" thru_hole circle
 		(at -1.27 -5.08)
@@ -173,7 +173,7 @@
 		(drill 0.8)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
-		(uuid "159e86fb-73a7-49bf-8013-8a7f5d2d7ffc")
+		(uuid "5f24536e-8068-4901-9754-b359cc5cce1e")
 	)
 	(pad "3" thru_hole circle
 		(at 1.27 -5.08)
@@ -181,7 +181,7 @@
 		(drill 0.8)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
-		(uuid "444a0202-b645-4c50-8bbf-54b1949ad9d0")
+		(uuid "04a8990a-d566-4b9b-9875-d134cdae1c64")
 	)
 	(pad "4" thru_hole circle
 		(at 3.81 -5.08)
@@ -189,11 +189,11 @@
 		(drill 0.8)
 		(layers "*.Cu" "*.Mask")
 		(remove_unused_layers no)
-		(uuid "4e53edd6-307e-4eeb-896b-71b700866ef2")
+		(uuid "a437bbc7-b82a-4521-9dc8-89aa40448ea7")
 	)
 	(zone
 		(layer "F.SilkS")
-		(uuid "08142e27-993b-41b6-9a05-e1eb52501b8d")
+		(uuid "44d76017-bae2-42e5-aa68-6ada186b4a81")
 		(hatch edge 0.5)
 		(connect_pads
 			(clearance 0)
