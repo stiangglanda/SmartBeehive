@@ -16,6 +16,8 @@ This project is an IoT-based beehive monitoring system. An ESP32-S3 collects rea
 
 <img width="3886" height="2295" alt="PXL_20260723_111851826" src="https://github.com/user-attachments/assets/53977667-cec1-4db0-828b-55320a0693da" />
 
+<img width="2860" height="2126" alt="PXL_20260911_131013808" src="https://github.com/user-attachments/assets/ad88ddff-5851-4b3e-9787-0965fe27e297" />
+
 ## PCB
 ![PCB](./hardware/SmartBeehive3DRender.png)
 
